@@ -1,6 +1,7 @@
 .vscode/
+.idea/
 
-/data
-vendor/
+.data
+
 develap
 develap-binaries/

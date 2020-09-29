@@ -38,7 +38,6 @@ type DockerPort struct {
 type DockerPath struct {
 	ImageName    string
 	DataPath     string
-	KeystorePath string
 	ConfigPath   string
 	PortMapping  map[string]DockerPort
 }
@@ -62,52 +61,32 @@ var (
 	Env            string
 	Nodes          string
 	CurrentDir     = getCurrentDir()
-	NetworkName    = "develap_localnet_network"
+	NetworkName    = "sws_network"
 	NodeDockerPath = map[string]DockerPath{
 		"mainchain": {
-			ImageName:    "cyberrepublic/elastos-mainchain-node:v0.4.0",
-			DataPath:     "/ela/elastos",
-			KeystorePath: "/ela/keystore.dat",
-			ConfigPath:   "/ela/config.json",
+			ImageName:    "cyberrepublic/ela-mainchain:v0.6.0",
+			DataPath:     "/elastos/elastos",
+			ConfigPath:   "/elastos/config.json",
 			PortMapping: map[string]DockerPort{
-				"mainnet":  DockerPort{"20334", "20336", "20334", "20336"},
-				"testnet":  DockerPort{"21334", "21336", "21334", "21336"},
-				"localnet": DockerPort{"20334", "20336", "22334", "22336"},
+				"mainnet": {"20334", "20336", "20334", "20336"},
+				"testnet": {"21334", "21336", "21334", "21336"},
 			},
-		},
-		"arbitrator": {
-			ImageName:    "cyberrepublic/elastos-arbitrator-node:v0.1.2",
-			DataPath:     "/arbiter/elastos_arbiter",
-			KeystorePath: "/arbiter/keystore.dat",
-			ConfigPath:   "/arbiter/config.json",
 		},
 		"did": {
-			ImageName:  "cyberrepublic/elastos-sidechain-did-node:v0.1.3",
-			DataPath:   "/did/elastos_did",
-			ConfigPath: "/did/config.json",
+			ImageName:  "cyberrepublic/ela-did-sidechain:v0.2.0",
+			DataPath:   "/elastos/elastos_did",
+			ConfigPath: "/elastos/config.json",
 			PortMapping: map[string]DockerPort{
-				"mainnet":  DockerPort{"20604", "20606", "20604", "20606"},
-				"testnet":  DockerPort{"21604", "21606", "21604", "21606"},
-				"localnet": DockerPort{"20604", "20606", "22604", "22606"},
-			},
-		},
-		"token": {
-			ImageName:  "cyberrepublic/elastos-sidechain-token-node:v0.1.2",
-			DataPath:   "/token/elastos_token",
-			ConfigPath: "/token/config.json",
-			PortMapping: map[string]DockerPort{
-				"mainnet":  DockerPort{"20614", "20616", "20614", "20616"},
-				"testnet":  DockerPort{"21614", "21616", "21614", "21616"},
-				"localnet": DockerPort{"20614", "20616", "22614", "22616"},
+				"mainnet":  {"20604", "20606", "20604", "20606"},
+				"testnet":  {"21604", "21606", "21604", "21606"},
 			},
 		},
 		"eth": {
-			ImageName: "cyberrepublic/elastos-sidechain-eth-node:v0.0.2",
-			DataPath:  "/eth/elastos_eth",
+			ImageName: "cyberrepublic/ela-eth-sidechain:v0.1.0",
+			DataPath:  "/elastos/elastos_eth",
 			PortMapping: map[string]DockerPort{
-				"mainnet":  DockerPort{ContainerRPCPort: "20636", HostRPCPort: "20636"},
-				"testnet":  DockerPort{ContainerRPCPort: "20636", HostRPCPort: "21636"},
-				"localnet": DockerPort{ContainerRPCPort: "20636", HostRPCPort: "22636"},
+				"mainnet": {ContainerRPCPort: "20636", HostRPCPort: "20636"},
+				"testnet": {ContainerRPCPort: "20636", HostRPCPort: "21636"},
 			},
 		},
 	}

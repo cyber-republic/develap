@@ -68,8 +68,6 @@ var ListCmd = &cobra.Command{
 								ports[portString] = getPortMapping(portString, NodeDockerPath["mainchain"].PortMapping)
 							} else if strings.Contains(containerName, "did") {
 								ports[portString] = getPortMapping(portString, NodeDockerPath["did"].PortMapping)
-							} else if strings.Contains(containerName, "token") {
-								ports[portString] = getPortMapping(portString, NodeDockerPath["token"].PortMapping)
 							} else if strings.Contains(containerName, "eth") {
 								ports[portString] = getPortMapping(portString, NodeDockerPath["eth"].PortMapping)
 							}
