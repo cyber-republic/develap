@@ -29,10 +29,8 @@ import (
 )
 
 type DockerPort struct {
-	ContainerRESTPort string
-	ContainerRPCPort  string
-	HostRESTPort      string
-	HostRPCPort       string
+	ContainerPort     string
+	HostPort          string
 }
 
 type DockerPath struct {
@@ -61,15 +59,15 @@ var (
 	Env            string
 	Nodes          string
 	CurrentDir     = getCurrentDir()
-	NetworkName    = "sws_network"
+	NetworkName    = "elastos_sws"
 	NodeDockerPath = map[string]DockerPath{
 		"mainchain": {
 			ImageName:    "cyberrepublic/ela-mainchain:v0.6.0",
 			DataPath:     "/elastos/elastos",
 			ConfigPath:   "/elastos/config.json",
 			PortMapping: map[string]DockerPort{
-				"mainnet": {"20334", "20336", "20334", "20336"},
-				"testnet": {"21334", "21336", "21334", "21336"},
+				"mainnet": {ContainerPort: "20336", HostPort: "20336"},
+				"testnet": {ContainerPort: "21336", HostPort: "21336"},
 			},
 		},
 		"did": {
@@ -77,16 +75,16 @@ var (
 			DataPath:   "/elastos/elastos_did",
 			ConfigPath: "/elastos/config.json",
 			PortMapping: map[string]DockerPort{
-				"mainnet":  {"20604", "20606", "20604", "20606"},
-				"testnet":  {"21604", "21606", "21604", "21606"},
+				"mainnet":  {ContainerPort: "20606", HostPort: "20606"},
+				"testnet":  {ContainerPort: "21606", HostPort: "21606"},
 			},
 		},
 		"eth": {
 			ImageName: "cyberrepublic/ela-eth-sidechain:v0.1.0",
 			DataPath:  "/elastos/elastos_eth",
 			PortMapping: map[string]DockerPort{
-				"mainnet": {ContainerRPCPort: "20636", HostRPCPort: "20636"},
-				"testnet": {ContainerRPCPort: "20636", HostRPCPort: "21636"},
+				"mainnet": {ContainerPort: "20636", HostPort: "20636"},
+				"testnet": {ContainerPort: "20636", HostPort: "21636"},
 			},
 		},
 	}

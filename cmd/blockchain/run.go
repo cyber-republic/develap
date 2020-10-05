@@ -85,20 +85,16 @@ func runDockerContainer(ctx context.Context, cli *client.Client, node string) (s
 		return containerName, resp, err
 	}
 
-	var containerRESTPort, containerRPCPort, hostRESTPort, hostRPCPort nat.Port
+	var containerPort, hostPort nat.Port
 	if node == "mainchain" {
-		containerRESTPort = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].ContainerRESTPort))
-		containerRPCPort = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].ContainerRPCPort))
-		hostRESTPort = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].HostRESTPort))
-		hostRPCPort = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].HostRPCPort))
+		containerPort = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].ContainerPort))
+		hostPort = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].HostPort))
 	} else if node == "did" {
-		containerRESTPort = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].ContainerRESTPort))
-		containerRPCPort = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].ContainerRPCPort))
-		hostRESTPort = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].HostRESTPort))
-		hostRPCPort = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].HostRPCPort))
+		containerPort = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].ContainerPort))
+		hostPort = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].HostPort))
 	} else if node == "eth" {
-		containerRPCPort = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].ContainerRPCPort))
-		hostRPCPort = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].HostRPCPort))
+		containerPort = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].ContainerPort))
+		hostPort = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].HostPort))
 	}
 
 	currentDir, err := os.Getwd()
@@ -116,13 +112,13 @@ func runDockerContainer(ctx context.Context, cli *client.Client, node string) (s
 	}
 
 	portBindings := nat.PortMap {
-		containerRPCPort:  []nat.PortBinding{{HostIP: "0.0.0.0", HostPort: hostRPCPort.Port()}},
+		containerPort: []nat.PortBinding{{HostIP: "0.0.0.0", HostPort: hostPort.Port()}},
 	}
 
 	containerConfig := &container.Config{
 		Image:        imageName,
 		ExposedPorts: nat.PortSet{
-			containerRPCPort:  struct{}{},
+			containerPort: struct{}{},
 		},
 	}
 
@@ -139,8 +135,6 @@ func runDockerContainer(ctx context.Context, cli *client.Client, node string) (s
 			Source: filepath.FromSlash(fmt.Sprintf("%s/%s/%s/config.json", currentDir, Env, node)),
 			Target: NodeDockerPath[node].ConfigPath,
 		})
-		containerConfig.ExposedPorts[containerRESTPort] = struct{}{}
-		portBindings[containerRESTPort] = []nat.PortBinding{{HostIP: "0.0.0.0", HostPort: hostRESTPort.Port()}}
 	}
 
 	hostConfig := &container.HostConfig{

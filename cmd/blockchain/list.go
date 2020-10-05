@@ -65,11 +65,11 @@ var ListCmd = &cobra.Command{
 						if port.IP == "0.0.0.0" {
 							portString := fmt.Sprintf("%v", port.PublicPort)
 							if strings.Contains(containerName, "mainchain") {
-								ports[portString] = getPortMapping(portString, NodeDockerPath["mainchain"].PortMapping)
+								ports[portString] = "RPC"
 							} else if strings.Contains(containerName, "did") {
-								ports[portString] = getPortMapping(portString, NodeDockerPath["did"].PortMapping)
+								ports[portString] = "RPC"
 							} else if strings.Contains(containerName, "eth") {
-								ports[portString] = getPortMapping(portString, NodeDockerPath["eth"].PortMapping)
+								ports[portString] = "RPC"
 							}
 						}
 					}
@@ -82,18 +82,6 @@ var ListCmd = &cobra.Command{
 
 		}
 	},
-}
-
-func getPortMapping(port string, nodeDockerPorts map[string]DockerPort) string {
-	var portType string
-	for _, dockerPorts := range nodeDockerPorts {
-		if port == dockerPorts.HostRESTPort {
-			portType = "REST"
-		} else if port == dockerPorts.HostRPCPort {
-			portType = "RPC"
-		}
-	}
-	return portType
 }
 
 func init() {
