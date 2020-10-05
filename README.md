@@ -4,8 +4,35 @@
     - [Install Docker Engine for Mac](https://docs.docker.com/docker-for-mac/install/)
     - [Install Docker Engine for Windows](https://docs.docker.com/docker-for-windows/install/)
     - For other platforms, check out [https://docs.docker.com/install/](https://docs.docker.com/install/)
-- Golang v1.13 or higher
+- Golang v1.15 or higher
 - Download the latest release specific to your platform from [https://github.com/cyber-republic/develap/releases](https://github.com/cyber-republic/develap/releases)
+
+## URL Routing
+- Mainchain Node RPC: 
+```
+http://localhost:5000/mainnet/blockchain/mainchain
+http://localhost:5000/testnet/blockchain/mainchain
+```
+- DID Node RPC: 
+```
+http://localhost:5000/mainnet/blockchain/did
+http://localhost:5000/testnet/blockchain/did
+```
+- ETH Node RPC: 
+```
+http://localhost:5000/mainnet/blockchain/eth
+http://localhost:5000/testnet/blockchain/eth
+```
+- Cross-chain Transfer Service: 
+```
+http://localhost:5000/mainnet/blockchain/xTransfer
+http://localhost:5000/testnet/blockchain/xTransfer
+```
+- Hive Node: 
+```
+http://localhost:5000/mainnet/hive
+http://localhost:5000/testnet/hive
+```
 
 ## Available nodes to be setup
 1. Mainchain node

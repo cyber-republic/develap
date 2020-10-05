@@ -21,7 +21,11 @@ THE SOFTWARE.
 */
 package main
 
-import "github.com/cyber-republic/develap/cmd"
+import (
+	"fmt"
+	"github.com/cyber-republic/develap/cmd"
+	"github.com/spf13/viper"
+)
 
 var (
 	// VERSION is set during build
@@ -30,4 +34,5 @@ var (
 
 func main() {
 	cmd.Execute(VERSION)
+	fmt.Println("TEST:", viper.Get("TEST"))
 }
