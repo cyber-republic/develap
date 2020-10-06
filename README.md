@@ -34,7 +34,7 @@ http://localhost:5000/mainnet/hive
 http://localhost:5000/testnet/hive
 ```
 
-## How to Run
+## How to run different nodes
 - Run a testnet environment with mainchain, did and eth nodes
     `./develap blockchain run -e testnet -n mainchain,did,eth`
 - Run a testnet environment with mainchain node
@@ -47,6 +47,11 @@ http://localhost:5000/testnet/hive
     `./develap blockchain kill -e testnet`
 - Show all the nodes currently running in mainnet environment
     `./develap blockchain list -e mainnet`
+
+## How to aggregate all the running nodes into one unified URL
+``` 
+./develap serve
+```
 
 ## Verify
 If you run the mainchain node for mainnet, you can do the following to check whether it's working:
