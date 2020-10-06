@@ -1,6 +1,8 @@
 package blockchain
 
 import (
+	"fmt"
+	"net"
 	"os"
 
 	"github.com/docker/docker/api/types/strslice"
@@ -45,8 +47,8 @@ var (
 			DataPath:     "/elastos/elastos",
 			ConfigPath:   "/elastos/config.json",
 			PortMapping: map[string]DockerPort{
-				"mainnet": {ContainerPort: "20336", HostPort: "20336"},
-				"testnet": {ContainerPort: "21336", HostPort: "21336"},
+				"mainnet": {ContainerPort: "20336", HostPort: getRandomPort()},
+				"testnet": {ContainerPort: "21336", HostPort: getRandomPort()},
 			},
 		},
 		"did": {
@@ -54,20 +56,31 @@ var (
 			DataPath:   "/elastos/elastos_did",
 			ConfigPath: "/elastos/config.json",
 			PortMapping: map[string]DockerPort{
-				"mainnet":  {ContainerPort: "20606", HostPort: "20606"},
-				"testnet":  {ContainerPort: "21606", HostPort: "21606"},
+				"mainnet":  {ContainerPort: "20606", HostPort: getRandomPort()},
+				"testnet":  {ContainerPort: "21606", HostPort: getRandomPort()},
 			},
 		},
 		"eth": {
 			ImageName: "cyberrepublic/ela-eth-sidechain:v0.1.0",
 			DataPath:  "/elastos/elastos_eth",
 			PortMapping: map[string]DockerPort{
-				"mainnet": {ContainerPort: "20636", HostPort: "20636"},
-				"testnet": {ContainerPort: "20636", HostPort: "21636"},
+				"mainnet": {ContainerPort: "20636", HostPort: getRandomPort()},
+				"testnet": {ContainerPort: "20636", HostPort: getRandomPort()},
 			},
 		},
 	}
 )
+
+func getRandomPort() string {
+	listener, err := net.Listen("tcp", ":0")
+	defer listener.Close()
+	if err != nil {
+		panic(err)
+	}
+	portInt := listener.Addr().(*net.TCPAddr).Port
+	portString := fmt.Sprintf("%d", portInt)
+	return portString
+}
 
 func getCurrentDir() string {
 	var currentDir string

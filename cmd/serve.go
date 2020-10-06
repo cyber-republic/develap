@@ -2,11 +2,13 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/cyber-republic/develap/cmd/blockchain"
 	"io"
 	"log"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -36,15 +38,44 @@ var serveCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var httpSrv *http.Server
 
-		remote, err := url.Parse("http://localhost:21336")
-		if err != nil {
-			panic(err)
-		}
-
 		mux := &http.ServeMux{}
 		mux.HandleFunc("/", handleIndex)
-		proxy := httputil.NewSingleHostReverseProxy(remote)
-		mux.HandleFunc("/testnet/blockchain/mainchain", rProxyHandler(proxy))
+
+		containers := blockchain.GetContainersList()
+		for _, container := range containers {
+			for _, containerName := range container.Names {
+				if strings.Contains(containerName, "develap") {
+					for _, port := range container.Ports {
+						if port.IP == "0.0.0.0" {
+							portString := fmt.Sprintf("%v", port.PublicPort)
+							urlToParse := fmt.Sprintf("http://localhost:%s", portString)
+							remoteURL, err := url.Parse(urlToParse)
+							if err != nil {
+								panic(err)
+							}
+							var localURL string
+							if strings.Contains(containerName, "testnet") {
+								localURL += "/testnet"
+							} else if strings.Contains(containerName, "mainnet") {
+								localURL += "/mainnet"
+							}
+							if strings.Contains(containerName, "mainchain") {
+								localURL += "/mainchain"
+							} else if strings.Contains(containerName, "did") {
+								localURL += "/did"
+							} else if strings.Contains(containerName, "eth") {
+								localURL += "/eth"
+							}
+							proxy := httputil.NewSingleHostReverseProxy(remoteURL)
+							fmt.Printf("Remote: %s Local: %s\n", remoteURL, localURL)
+							mux.HandleFunc(localURL, rProxyHandler(proxy))
+						}
+					}
+					break
+				}
+			}
+		}
+
 		// set timeouts so that a slow or malicious client doesn't
 		// hold resources forever
 		httpSrv = &http.Server{
@@ -58,7 +89,7 @@ var serveCmd = &cobra.Command{
 		// Launch HTTP server
 		fmt.Println("Starting server http://localhost:5000")
 
-		err = httpSrv.ListenAndServe()
+		err := httpSrv.ListenAndServe()
 		if err != nil {
 			log.Fatalf("httpSrv.ListenAndServe() failed with %s", err)
 		}

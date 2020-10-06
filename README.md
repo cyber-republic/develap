@@ -10,40 +10,29 @@
 ## URL Routing
 - Mainchain Node RPC: 
 ```
-http://localhost:5000/mainnet/blockchain/mainchain
-http://localhost:5000/testnet/blockchain/mainchain
+http://localhost:5000/mainnet/mainchain
+http://localhost:5000/testnet/mainchain
 ```
 - DID Node RPC: 
 ```
-http://localhost:5000/mainnet/blockchain/did
-http://localhost:5000/testnet/blockchain/did
+http://localhost:5000/mainnet/did
+http://localhost:5000/testnet/did
 ```
 - ETH Node RPC: 
 ```
-http://localhost:5000/mainnet/blockchain/eth
-http://localhost:5000/testnet/blockchain/eth
+http://localhost:5000/mainnet/eth
+http://localhost:5000/testnet/eth
 ```
 - Cross-chain Transfer Service: 
 ```
-http://localhost:5000/mainnet/blockchain/xTransfer
-http://localhost:5000/testnet/blockchain/xTransfer
+http://localhost:5000/mainnet/xTransfer
+http://localhost:5000/testnet/xTransfer
 ```
 - Hive Node: 
 ```
 http://localhost:5000/mainnet/hive
 http://localhost:5000/testnet/hive
 ```
-
-## Available nodes to be setup
-1. Mainchain node
-    - mainnet: [20334 - RESTAPI Port, 20336 - RPC Port]
-    - testnet: [21334 - RESTAPI Port, 21336 - RPC Port]
-2. DID node
-    - mainnet: [20604 - RESTAPI Port, 20606 - RPC Port]
-    - testnet: [21604 - RESTAPI Port, 21606 - RPC Port]
-3. Eth node
-    - mainnet: [20636 - RPC Port]
-    - testnet: [21636 - RPC Port]
 
 ## How to Run
 - Run a testnet environment with mainchain, did and eth nodes
@@ -58,6 +47,12 @@ http://localhost:5000/testnet/hive
     `./develap blockchain kill -e testnet`
 - Show all the nodes currently running in mainnet environment
     `./develap blockchain list -e mainnet`
+
+## Verify
+If you run the mainchain node for mainnet, you can do the following to check whether it's working:
+```
+curl -H 'Content-Type: application/json' -H 'Accept:application/json' --data '{"method":"getcurrentheight"}' localhost:5000/mainnet/mainchain
+```
 
 ## How to build the binary yourself
 - `make` to build it for your local environment

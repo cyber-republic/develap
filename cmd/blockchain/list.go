@@ -21,16 +21,7 @@ var ListCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("blockchain list called with environment: [%s]\n\n", Env)
 
-		ctx := context.Background()
-		cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		containers, err := cli.ContainerList(ctx, types.ContainerListOptions{})
-		if err != nil {
-			log.Fatal(err)
-		}
+		containers := GetContainersList()
 
 		for _, container := range containers {
 			for _, containerName := range container.Names {
@@ -59,9 +50,22 @@ var ListCmd = &cobra.Command{
 					break
 				}
 			}
-
 		}
 	},
+}
+
+func GetContainersList() []types.Container {
+	ctx := context.Background()
+	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	containers, err := cli.ContainerList(ctx, types.ContainerListOptions{})
+	if err != nil {
+		log.Fatal(err)
+	}
+	return containers
 }
 
 func init() {

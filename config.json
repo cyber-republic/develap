@@ -1,8 +1,3 @@
-{ 
-    "testnet": {
-        "blockchain": {
-            "mainchain": 21336,
-            "did": 21606
-        }
-    }
+{
+    "key": "value"
 }
