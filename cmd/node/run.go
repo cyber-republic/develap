@@ -1,4 +1,4 @@
-package blockchain
+package node
 
 import (
 	"fmt"
@@ -20,13 +20,13 @@ import (
 // RunCmd represents the run command
 var RunCmd = &cobra.Command{
 	Use:   "run",
-	Short: "Run blockchain nodes",
-	Long:  `Run blockchain nodes`,
+	Short: "Run node nodes",
+	Long:  `Run node nodes`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("blockchain run called with environment: [%s] and nodes: [%s]\n", Env, Nodes)
+		fmt.Printf("node run called with environment: [%s] and nodes: [%s]\n", Env, Type)
 
-		if !strings.EqualFold(Env, "mainnet") &&
-			!strings.EqualFold(Env, "testnet")  {
+		if !strings.EqualFold(Env, MainNet) &&
+			!strings.EqualFold(Env, TestNet)  {
 			log.Fatalf("%s not recognized as a valid net type\n", Env)
 		}
 
@@ -36,9 +36,9 @@ var RunCmd = &cobra.Command{
 			log.Fatal(err)
 		}
 
-		nodes := strings.Split(strings.Replace(Nodes, " ", "", -1), ",")
+		nodes := strings.Split(strings.Replace(Type, " ", "", -1), ",")
 			for _, node := range nodes {
-				if node == "mainchain" || node == "did" || node == "eth" {
+				if IsSupportedNode(node) {
 					if containerName, resp, err := runDockerContainer(ctx, cli, node); err != nil {
 						log.Print(err)
 					} else {
@@ -64,17 +64,10 @@ func runDockerContainer(ctx context.Context, cli *client.Client, node string) (s
 		return containerName, resp, err
 	}
 
-	var containerPort, hostPort nat.Port
-	if node == "mainchain" {
-		containerPort = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].ContainerPort))
+	var (
+		containerPort nat.Port = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].ContainerPort))
 		hostPort = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].HostPort))
-	} else if node == "did" {
-		containerPort = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].ContainerPort))
-		hostPort = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].HostPort))
-	} else if node == "eth" {
-		containerPort = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].ContainerPort))
-		hostPort = nat.Port(fmt.Sprintf("%s/tcp", NodeDockerPath[node].PortMapping[Env].HostPort))
-	}
+	)
 
 	currentDir, err := os.Getwd()
 	if err != nil {
@@ -121,7 +114,7 @@ func runDockerContainer(ctx context.Context, cli *client.Client, node string) (s
 		Mounts: mounts,
 	}
 
-	containerName = fmt.Sprintf("develap-%s-%s-node", Env, node)
+	containerName = fmt.Sprintf("%s-%s-%s-node", ContainerPrefix, Env, node)
 
 	resp, err = cli.ContainerCreate(
 		ctx,
@@ -140,6 +133,7 @@ func runDockerContainer(ctx context.Context, cli *client.Client, node string) (s
 }
 
 func init() {
-	RunCmd.Flags().StringVarP(&Nodes, "nodes", "n", "", "Nodes to use [mainchain,did,eth]")
-	RunCmd.MarkFlagRequired("nodes")
+	usage := fmt.Sprintf("Type of node %v", SupportedNodes)
+	RunCmd.Flags().StringVarP(&Type, "type", "t", "", usage)
+	RunCmd.MarkFlagRequired("type")
 }

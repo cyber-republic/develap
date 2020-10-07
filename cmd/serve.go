@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/cyber-republic/develap/cmd/blockchain"
+	"github.com/cyber-republic/develap/cmd/node"
 	"io"
 	"log"
 	"net/http"
@@ -33,18 +33,18 @@ func rProxyHandler(p *httputil.ReverseProxy) func(http.ResponseWriter, *http.Req
 // serveCmd represents the serve command
 var serveCmd = &cobra.Command{
 	Use:   "serve",
-	Short: "Setup route to different docker containers",
-	Long:  `Setup route to different docker containers`,
-	Run: func(cmd *cobra.Command, args []string) {
+	Short: "Setup route to different node containers",
+	Long:  `Setup route to different node containers`,
+	Run: func(c *cobra.Command, args []string) {
 		var httpSrv *http.Server
 
 		mux := &http.ServeMux{}
 		mux.HandleFunc("/", handleIndex)
 
-		containers := blockchain.GetContainersList()
+		containers := node.GetRunningContainersList()
 		for _, container := range containers {
 			for _, containerName := range container.Names {
-				if strings.Contains(containerName, "develap") {
+				if strings.Contains(containerName, node.ContainerPrefix) {
 					for _, port := range container.Ports {
 						if port.IP == "0.0.0.0" {
 							portString := fmt.Sprintf("%v", port.PublicPort)
@@ -53,19 +53,15 @@ var serveCmd = &cobra.Command{
 							if err != nil {
 								panic(err)
 							}
+
+							nodeName := strings.Split(containerName, "-")[2]
 							var localURL string
-							if strings.Contains(containerName, "testnet") {
-								localURL += "/testnet"
-							} else if strings.Contains(containerName, "mainnet") {
-								localURL += "/mainnet"
+							if strings.Contains(containerName, node.TestNet) {
+								localURL = fmt.Sprintf("/%s/%s", node.TestNet, nodeName)
+							} else if strings.Contains(containerName, node.MainNet) {
+								localURL = fmt.Sprintf("/%s/%s", node.MainNet, nodeName)
 							}
-							if strings.Contains(containerName, "mainchain") {
-								localURL += "/mainchain"
-							} else if strings.Contains(containerName, "did") {
-								localURL += "/did"
-							} else if strings.Contains(containerName, "eth") {
-								localURL += "/eth"
-							}
+
 							proxy := httputil.NewSingleHostReverseProxy(remoteURL)
 							fmt.Printf("Remote: %s Local: %s\n", remoteURL, localURL)
 							mux.HandleFunc(localURL, rProxyHandler(proxy))
@@ -94,6 +90,10 @@ var serveCmd = &cobra.Command{
 			log.Fatalf("httpSrv.ListenAndServe() failed with %s", err)
 		}
 	},
+}
+
+func blockchainEndpoints() {
+
 }
 
 func init() {

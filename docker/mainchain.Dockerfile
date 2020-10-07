@@ -1,5 +1,5 @@
 # Mainchain - elastos.org
-# This is an official but unsupported docker image
+# This is an official but unsupported node image
 
 FROM golang:1.15.2-alpine3.12 AS builder
 

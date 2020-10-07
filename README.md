@@ -7,7 +7,12 @@
 - Golang v1.15 or higher
 - Download the latest release specific to your platform from [https://github.com/cyber-republic/develap/releases](https://github.com/cyber-republic/develap/releases)
 
-## URL Routing
+## URLs
+- Basic endpoints
+``` 
+http://localhost:5000/services/available
+http://localhost:5000/services/running
+```
 - Mainchain Node RPC: 
 ```
 http://localhost:5000/mainnet/mainchain
@@ -23,12 +28,12 @@ http://localhost:5000/testnet/did
 http://localhost:5000/mainnet/eth
 http://localhost:5000/testnet/eth
 ```
-- Cross-chain Transfer Service: 
+- TODO: Cross-chain Transfer Service: 
 ```
 http://localhost:5000/mainnet/xTransfer
 http://localhost:5000/testnet/xTransfer
 ```
-- Hive Node: 
+- TODO: Hive Node: 
 ```
 http://localhost:5000/mainnet/hive
 http://localhost:5000/testnet/hive
@@ -36,17 +41,17 @@ http://localhost:5000/testnet/hive
 
 ## How to run different nodes
 - Run a testnet environment with mainchain, did and eth nodes
-    `./develap blockchain run -e testnet -n mainchain,did,eth`
+    `./develap node run -e testnet -t mainchain,did,eth`
 - Run a testnet environment with mainchain node
-    `./develap blockchain run -e testnet -n mainchain`
+    `./develap node run -e testnet -t mainchain`
 - Run a mainnet environment with did node
-    `./develap blockchain run -e mainnet -n did`
+    `./develap node run -e mainnet -t did`
 - Kill eth node on mainnet environment
-    `./develap blockchain kill -e mainnet -n eth`
+    `./develap node kill -e mainnet -t eth`
 - Kill all the nodes on testnet environment
-    `./develap blockchain kill -e testnet`
+    `./develap node kill -e testnet`
 - Show all the nodes currently running in mainnet environment
-    `./develap blockchain list -e mainnet`
+    `./develap node list -e mainnet`
 
 ## How to aggregate all the running nodes into one unified URL
 ``` 
