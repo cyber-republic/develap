@@ -17,7 +17,7 @@ var KillCmd = &cobra.Command{
 	Short: "Kill node nodes",
 	Long:  `Kill node nodes`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("node kill called with environment: [%s] and nodes: [%s]\n", Env, Type)
+		log.Printf("node kill called with environment: [%s] and nodes: [%s]\n", Env, Type)
 
 		ctx := context.Background()
 		cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
@@ -35,7 +35,7 @@ var KillCmd = &cobra.Command{
 			for _, containerName := range container.Names {
 				if strings.Contains(containerName, ContainerPrefix) && strings.Contains(containerName, Env) {
 					if len(nodes) == 0 {
-						fmt.Printf("Stopping container '%v' with ID '%v'...\n", containerName[1:], container.ID[:10])
+						log.Printf("Stopping container '%v' with ID '%v'...\n", containerName[1:], container.ID[:10])
 						if err := cli.ContainerStop(ctx, container.ID, nil); err != nil {
 							log.Fatal(err)
 						}
@@ -45,7 +45,7 @@ var KillCmd = &cobra.Command{
 					} else {
 						for _, node := range nodes {
 							if strings.Contains(containerName, node) {
-								fmt.Printf("Stopping container '%v' with ID '%v'...\n", containerName[1:], container.ID[:10])
+								log.Printf("Stopping container '%v' with ID '%v'...\n", containerName[1:], container.ID[:10])
 								if err := cli.ContainerStop(ctx, container.ID, nil); err != nil {
 									log.Fatal(err)
 								}

@@ -8,35 +8,20 @@
 - Download the latest release specific to your platform from [https://github.com/cyber-republic/develap/releases](https://github.com/cyber-republic/develap/releases)
 
 ## URLs
-- Basic endpoints
+- Status endpoints
 ``` 
-http://localhost:5000/services/available
-http://localhost:5000/services/running
+http://localhost:5000/status/nodes
+http://localhost:5000/status/nodes/started
+http://localhost:5000/status/nodes/stopped
 ```
-- Mainchain Node RPC: 
+- Node endpoints: 
 ```
-http://localhost:5000/mainnet/mainchain
-http://localhost:5000/testnet/mainchain
-```
-- DID Node RPC: 
-```
-http://localhost:5000/mainnet/did
-http://localhost:5000/testnet/did
-```
-- ETH Node RPC: 
-```
-http://localhost:5000/mainnet/eth
-http://localhost:5000/testnet/eth
-```
-- TODO: Cross-chain Transfer Service: 
-```
-http://localhost:5000/mainnet/xTransfer
-http://localhost:5000/testnet/xTransfer
-```
-- TODO: Hive Node: 
-```
-http://localhost:5000/mainnet/hive
-http://localhost:5000/testnet/hive
+http://localhost:5000/node/mainnet/mainchain
+http://localhost:5000/node/testnet/mainchain
+http://localhost:5000/node/mainnet/did
+http://localhost:5000/node/testnet/did
+http://localhost:5000/node/mainnet/eth
+http://localhost:5000/node/testnet/eth
 ```
 
 ## How to run different nodes

@@ -20,10 +20,10 @@ import (
 // RunCmd represents the run command
 var RunCmd = &cobra.Command{
 	Use:   "run",
-	Short: "Run node nodes",
-	Long:  `Run node nodes`,
+	Short: "Run nodes",
+	Long:  `Run nodes`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("node run called with environment: [%s] and nodes: [%s]\n", Env, Type)
+		log.Printf("node run called with environment: [%s] and nodes: [%s]\n", Env, Type)
 
 		if !strings.EqualFold(Env, MainNet) &&
 			!strings.EqualFold(Env, TestNet)  {
@@ -42,7 +42,7 @@ var RunCmd = &cobra.Command{
 					if containerName, resp, err := runDockerContainer(ctx, cli, node); err != nil {
 						log.Print(err)
 					} else {
-						fmt.Printf("\nNetwork: %s\nNode Type: %s\nContainer Name: %s\nContainer ID: %v\n",
+						fmt.Printf("\nEnvironment: %s\nNode Type: %s\nContainer Name: %s\nContainer ID: %v\n",
 										Env, node, containerName, resp.ID[:10])
 					}
 				} else {
