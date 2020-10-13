@@ -1,3 +1,5 @@
+This repo has moved to [https://github.com/elastos/Elastos.Smartweb.Service](https://github.com/elastos/Elastos.Smartweb.Service)
+
 ## Pre-requisites
 - Install Docker Engine
     - [Install Docker Engine for Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
