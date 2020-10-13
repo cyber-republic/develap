@@ -11,7 +11,7 @@
 - Status endpoints
 ``` 
 http://localhost:5000/status/nodes
-http://localhost:5000/status/nodes/started
+http://localhost:5000/status/nodes/running
 http://localhost:5000/status/nodes/stopped
 ```
 - Node endpoints: 
