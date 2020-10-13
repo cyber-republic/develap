@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	ContainerPrefix = "develap"
+	ContainerPrefix = "sws"
 	MainNet = "mainnet"
 	TestNet = "testnet"
 )

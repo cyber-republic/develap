@@ -26,21 +26,21 @@ http://localhost:5000/node/testnet/eth
 
 ## How to run different nodes
 - Run a testnet environment with mainchain, did and eth nodes
-    `./develap node run -e testnet -t mainchain,did,eth`
+    `./sws node run -e testnet -t mainchain,did,eth`
 - Run a testnet environment with mainchain node
-    `./develap node run -e testnet -t mainchain`
+    `./sws node run -e testnet -t mainchain`
 - Run a mainnet environment with did node
-    `./develap node run -e mainnet -t did`
+    `./sws node run -e mainnet -t did`
 - Kill eth node on mainnet environment
-    `./develap node kill -e mainnet -t eth`
+    `./sws node kill -e mainnet -t eth`
 - Kill all the nodes on testnet environment
-    `./develap node kill -e testnet`
+    `./sws node kill -e testnet`
 - Show all the nodes currently running in mainnet environment
-    `./develap node list -e mainnet`
+    `./sws node list -e mainnet`
 
 ## How to aggregate all the running nodes into one unified URL
 ``` 
-./develap serve
+./sws serve
 ```
 
 ## Verify

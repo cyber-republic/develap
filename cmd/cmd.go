@@ -12,9 +12,9 @@ var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "develap",
+	Use:   "sws",
 	Short: "Tool for Elastos Development",
-	Long: `Develap is a tool that lets developers easily setup their 
+	Long: `Elastos SWS(Smartweb Service) is a tool that lets developers easily setup their 
 local machine to connect to mainnet or testnet that then can
 be used in any applications to interact with the Elastos
 infrastructure and services it provides.`,
